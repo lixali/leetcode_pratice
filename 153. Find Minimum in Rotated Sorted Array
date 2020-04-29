@@ -1,0 +1,62 @@
+### the idea is to do it in log(n)
+
+
+### Definitely this question, I need more practice.........
+### practice this with leetcode 215 https://leetcode.com/problems/kth-largest-element-in-an-array/
+### pratice this question with leetcode 148 https://leetcode.com/problems/sort-list/
+
+
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        res = None
+        def helper(arr, start, end):
+            nonlocal res
+            mid = (start+end)//2      ### start+end//2 instead of (start+end+1)//2 means that mid can become the starting end of the boundry(which is "start"), and it will not become become the closing end of the boundry (which is "end")
+            
+            if arr[start] <= arr[mid] <= arr[end]: ### I need ">=" and "<=" here is because there may only be 2 element, and I need mid to be the first element and not the second
+                res = arr[start]
+                return
+            elif arr[mid] >= arr[end]:
+                helper(arr, mid+1, end)    ###it is very tricky, if I change the mid+1 to mid here, it will not work
+            elif arr[mid] <= arr[start]:
+                helper(arr, start, mid)  ### mid-1 will not work here is because you can't let the smalles number become the closing end of the boundry, it always needs to be the opening end of the boundry.....
+            return
+        leng = len(nums)
+        helper(nums, 0, leng-1)
+        return res
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+'''
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        
+        new_list = nums
+        while len(new_list) != 1:
+            n = len(new_list)
+        
+            if new_list[0] > new_list[n//2 - 1]:
+                new_list = new_list[:n//2+1]
+            
+            elif new_list[n//2] > new_list[-1]:
+                new_list = new_list[n//2:]
+            else:
+                min_num = new_list[0]
+                new_list = new_list[:n//2]
+            
+        return min_num
+'''
