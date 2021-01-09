@@ -1,0 +1,73 @@
+### this is a practice round .... 
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        
+        if endWord not in wordList: return 0
+        
+        
+        '''
+        def compare(a, b):  ### no need for that
+            leng = len(a)
+            diff = 0
+            idx = 0
+            for i in range(leng):
+                if a[i] != b[i]:
+                    diff += 1
+                    idx = i
+            if diff == 1: return True, idx
+            return False, idx
+                
+        '''
+        
+        
+        dic = defaultdict(list)
+        
+        
+        arr = []
+        arr.append(beginWord)
+        arr.extend(wordList)
+        wl = len(beginWord)
+        
+        '''
+        for i in range(len(arr)-1):   ### this will make time limit exceeded ..... 
+            for j in range(i+1, len(arr)):
+                status, indx = compare(arr[i], arr[j])
+                
+                if status == True:
+                    if arr[i] not in dic[arr[i][:indx] + "#" + arr[i][indx+1:]]:
+                        dic[arr[i][:indx] + "#" + arr[i][indx+1:]].append(arr[i])
+                    if arr[j] not in dic[arr[i][:indx] + "#" + arr[i][indx+1:]]:
+                        dic[arr[i][:indx] + "#" + arr[i][indx+1:]].append(arr[j])
+        
+        
+        '''
+        
+        
+        for word in wordList:  ### this for loop time complexity is better than the above one ....
+            for i in range(len(word)):
+                dic[word[:i]+"#"+word[i+1:]].append(word)
+        visited = set()
+        
+        queue = deque()
+        
+        queue.append([beginWord, 0])
+        visited.add(beginWord)
+        while queue:
+            
+            word,step = queue.popleft()
+            
+            if word == endWord: return step+1
+            
+            for i in range(wl):
+                for nei in dic[word[:i] + "#" + word[i+1:]]:
+                    if nei not in visited:
+                        queue.append([nei, step + 1])
+                        visited.add(nei)
+                        
+        return 0
+              
+
+
+                        
+                
+        
